@@ -14,12 +14,12 @@ class App extends Component {
 
   state = {
     books:[
-      {bookName:"Theory about machine", writer:"Alan Turing"},
-      {bookName:"Solution from error.", writer:"Freakman Kalo"},
-      {bookName:"Theory about machine", writer:"Michel Hauge"},
+      {id:1, bookName:"Theory about machine", writer:"Alan Turing"},
+      {id:2, bookName:"Solution from error.", writer:"Freakman Kalo"},
+      {id:3, bookName:"Theory about machine", writer:"Michel Hauge"},
     ]
   }
-
+/*
   ChangeBookState = (newBookName)=>{
     this.setState({
       books:[
@@ -29,8 +29,23 @@ class App extends Component {
       ]
     })
   }
+*/
+  changeFromInput = (event, index)=>{
 
-  changeFromInput = (event)=>{
+    //changing value by index using spread operator
+    const book = {
+      ...this.state.books[index]
+
+    }
+
+    book.bookName = event.target.value;
+
+    const books= [...this.state.books];
+    books[index] = book;
+
+    this.setState({books: books})
+
+    /*
     this.setState({
       books:[
         {bookName: event.target.value, writer:"Alan Turing"},
@@ -38,25 +53,56 @@ class App extends Component {
         {bookName:"The warefare ", writer:"Michel Hauge"},
       ]
     })
+    */
+  }
+
+  deleteBookState = (index) =>{
+    //Many deleteing Ways
+    //const books = this.state.books;
+    //const books = this.state.books.slice(); 
+    
+    
+    //const books = this.state.books.map(item => item); //Taking the item and returning also
+    
+    const books = [...this.state.books]; //It will splite out individually  by spread operator
+    books.splice(index, 1);
+
+    this.setState({books: books})
 
   }
 
   render(){
+    //CSS style as a object
     const style1 = {
       color: "Green",
       fontSize:"20px",
       backgroundColor:"black"
       
     }
+
+    //Mapping the component from state and sending value to the jsx by props. 
+    const books = this.state.books.map((book,index)=>{
+      return (
+        <Books
+          bookName={book.bookName}
+          writer = {book.writer}
+          delete = {()=>this.deleteBookState(index)}
+          key={book.id}
+          inputName={ (event,) =>this.changeFromInput(event,index)}
+
+        />
+
+      );
+    });
     return (
       <div className="App">
         <h3 style={style1}>All Books</h3>
+        {/*
+        Comment in a JSX code
         <input type="text" onChange={this.changeFromInput}/>
         <button onClick={()=>this.ChangeBookState("Raihans 1st book")}>Change State</button>
-          <Books name={this.state.books[0].bookName} writer={this.state.books[0].writer}/>
-          <Books name={this.state.books[1].bookName} writer={this.state.books[1].writer}/>
-          <Books name={this.state.books[2].bookName} writer={this.state.books[2].writer}
-          change={this.ChangeBookState.bind(this,"Raihans 2nd book")}/>
+        */}
+        {books}
         
       </div>
     );
