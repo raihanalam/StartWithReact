@@ -5,6 +5,7 @@ import { Route, Routes, NavLink, Navigate } from "react-router-dom";
 import BookList from "./lists/BookList";
 import BookDetail from "./representational/BookDetail";
 import NewBook from "./representational/NewBook";
+import NotFound from "./NotFound";
 
 class MainComponent extends Component {
   constructor(props) {
@@ -40,6 +41,7 @@ class MainComponent extends Component {
         </nav>
 
         <Routes>
+          <Route path="*" element={<NotFound/>}/>
           <Route path="/" exact element={<Navigate to="/books" />} />
           <Route path="/books" exact element={books} />
           <Route path="/new-book" exact element={<NewBook />} />
