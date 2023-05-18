@@ -1,15 +1,17 @@
 import './App.css';
 import React from 'react';
 import MainComponent from './components/MainComponent';
-import { BrowserRouter } from 'react-router-dom';
+import { BrowserRouter} from 'react-router-dom';
 
 
 
-const App =  () => {
+const App = () => {
   return (
-    <BrowserRouter>
+    <React.StrictMode>
+      <BrowserRouter>
         <MainComponent />
-    </BrowserRouter>
+      </BrowserRouter>
+    </React.StrictMode>
   );
 }
 

@@ -1,28 +1,53 @@
 import React, { Component } from "react";
-import { Route, Routes, Link, NavLink } from "react-router-dom";
+import bookList from "../assets/books";
+import { Route, Routes, NavLink, Navigate } from "react-router-dom";
 
+import BookList from "./lists/BookList";
+import BookDetail from "./representational/BookDetail";
+import NewBook from "./representational/NewBook";
 
 class MainComponent extends Component {
-     /*
-     constructor(props){
-          super(props)
-     }
-     */
-     render() {
-          return (
-               <div className="App">
-                    <nav className="nav-bar">
-                              <NavLink  to="/">Home</NavLink>
-                              <NavLink to="/new-book">Book</NavLink>
-                    </nav>
-                    <Routes>
+  constructor(props) {
+    super(props);
+    this.state = {
+      books: bookList,
+      selectedBook: null
+    };
+  }
 
-                         <Route path="/" exact render={() => <h1>Home</h1>} />
-                         <Route path="/new-book" render={() => <h1>New Book</h1>} />
-                    </Routes>
-               </div>
-          )
-     }
+  selectedBookHandler = (bookId) => {
+    const book = this.state.books.filter((book) => book.id === bookId)[0];
+
+    this.setState({
+      selectedBook: book
+    });
+  };
+
+  render() {
+    const books = <BookList books={this.state.books} selectedBookHandler={this.selectedBookHandler} />;
+
+    return (
+      <div className="App">
+        <nav className="nav-bar">
+          <ul>
+            <li>
+              <NavLink to="/books">Home</NavLink>
+            </li>
+            <li>
+              <NavLink to="/new-book">Book</NavLink>
+            </li>
+          </ul>
+        </nav>
+
+        <Routes>
+          <Route path="/" exact element={<Navigate to="/books" />} />
+          <Route path="/books" exact element={books} />
+          <Route path="/new-book" exact element={<NewBook />} />
+          <Route path="/book/:id" element={<BookDetail book={this.state.selectedBook} />} />
+        </Routes>
+      </div>
+    );
+  }
 }
 
 export default MainComponent;
